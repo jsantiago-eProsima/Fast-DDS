@@ -377,6 +377,11 @@ endif()
 
 #Create library
 add_library(${PROJECT_NAME} ${${PROJECT_NAME}_source_files})
+
+if(Sanitizers_FOUND)
+    add_sanitize_thread(${PROJECT_NAME})
+endif()
+
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
 
