@@ -367,14 +367,14 @@ public:
         return security_attributes_;
     }
 
-    bool is_security_initialized() const
+    inline bool is_security_initialized() const
     {
-        return m_security_manager_initialized;
+        return m_security_manager.is_security_initialized();
     }
 
-    bool is_secure() const
+    inline bool is_secure() const
     {
-        return m_is_security_active;
+        return m_security_manager.is_security_active();
     }
 
     bool pairing_remote_reader_with_local_writer_after_security(
@@ -553,10 +553,6 @@ private:
 #if HAVE_SECURITY
     // Security manager
     security::SecurityManager m_security_manager;
-    // Security manager initialization result
-    bool m_security_manager_initialized = false;
-    // Security activation flag
-    bool m_is_security_active = false;
 #endif // if HAVE_SECURITY
 
     //! Encapsulates all associated resources on a Receiving element.

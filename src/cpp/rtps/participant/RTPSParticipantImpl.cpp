@@ -325,9 +325,9 @@ RTPSParticipantImpl::RTPSParticipantImpl(
 #if HAVE_SECURITY
     // Start security
     // TODO(Ricardo) Get returned value in future.
-    m_security_manager_initialized = m_security_manager.init(security_attributes_, PParam.properties,
-                    m_is_security_active);
-    if (!m_security_manager_initialized)
+    if (m_security_manager.init(
+                security_attributes_,
+                PParam.properties))
     {
         // Participant will be deleted, no need to allocate buffers or create builtin endpoints
         return;
@@ -391,13 +391,10 @@ RTPSParticipantImpl::RTPSParticipantImpl(
 
 
 #if HAVE_SECURITY
-    if (m_is_security_active)
+    if (m_security_manager.is_security_active())
     {
-        m_is_security_active = m_security_manager.create_entities();
-        if (!m_is_security_active)
+        if (!m_security_manager.create_entities())
         {
-            // Participant will be deleted, no need to create builtin endpoints
-            m_security_manager_initialized = false;
             return;
         }
     }
