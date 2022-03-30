@@ -138,13 +138,13 @@ if(SECURITY)
 endif()
 
 if(PYTHONINTERP_FOUND)
-    add_test(NAME SimpleCommunicationBestEffort
+    proxy_add_test(NAME SimpleCommunicationBestEffort
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/simple_communication.py)
 
     # Set test with label NoMemoryCheck
     set_property(TEST SimpleCommunicationBestEffort PROPERTY LABELS "NoMemoryCheck")
 
-    set_property(TEST SimpleCommunicationBestEffort PROPERTY ENVIRONMENT
+    set_property(TEST SimpleCommunicationBestEffort APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_PUBLISHER_BIN=$<TARGET_FILE:SimpleCommunicationPublisher>")
     set_property(TEST SimpleCommunicationBestEffort APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_SUBSCRIBER_BIN=$<TARGET_FILE:SimpleCommunicationSubscriber>")
@@ -156,13 +156,13 @@ if(PYTHONINTERP_FOUND)
             "PATH=$<TARGET_FILE_DIR:${PROJECT_NAME}>\\;$<TARGET_FILE_DIR:fastcdr>\\;${WIN_PATH}")
     endif()
 
-    add_test(NAME SimpleCommunicationReliable
+    proxy_add_test(NAME SimpleCommunicationReliable
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/simple_communication.py)
 
     # Set test with label NoMemoryCheck
     set_property(TEST SimpleCommunicationReliable PROPERTY LABELS "NoMemoryCheck")
 
-    set_property(TEST SimpleCommunicationReliable PROPERTY ENVIRONMENT
+    set_property(TEST SimpleCommunicationReliable APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_PUBLISHER_BIN=$<TARGET_FILE:SimpleCommunicationPublisher>")
     set_property(TEST SimpleCommunicationReliable APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_SUBSCRIBER_BIN=$<TARGET_FILE:SimpleCommunicationSubscriber>")
@@ -174,13 +174,13 @@ if(PYTHONINTERP_FOUND)
             "PATH=$<TARGET_FILE_DIR:${PROJECT_NAME}>\\;$<TARGET_FILE_DIR:fastcdr>\\;${WIN_PATH}")
     endif()
 
-    add_test(NAME SimpleCommunicationReliableBestEffort
+    proxy_add_test(NAME SimpleCommunicationReliableBestEffort
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/simple_communication.py)
 
     # Set test with label NoMemoryCheck
     set_property(TEST SimpleCommunicationReliableBestEffort PROPERTY LABELS "NoMemoryCheck")
 
-    set_property(TEST SimpleCommunicationReliableBestEffort PROPERTY ENVIRONMENT
+    set_property(TEST SimpleCommunicationReliableBestEffort APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_PUBLISHER_BIN=$<TARGET_FILE:SimpleCommunicationPublisher>")
     set_property(TEST SimpleCommunicationReliableBestEffort APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_SUBSCRIBER_BIN=$<TARGET_FILE:SimpleCommunicationSubscriber>")
@@ -192,13 +192,13 @@ if(PYTHONINTERP_FOUND)
             "PATH=$<TARGET_FILE_DIR:${PROJECT_NAME}>\\;$<TARGET_FILE_DIR:fastcdr>\\;${WIN_PATH}")
     endif()
 
-    add_test(NAME SimpleMixCommunicationBestEffort
+    proxy_add_test(NAME SimpleMixCommunicationBestEffort
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/simple_mix_communication.py)
 
     # Set test with label NoMemoryCheck
     set_property(TEST SimpleMixCommunicationBestEffort PROPERTY LABELS "NoMemoryCheck")
 
-    set_property(TEST SimpleMixCommunicationBestEffort PROPERTY ENVIRONMENT
+    set_property(TEST SimpleMixCommunicationBestEffort APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_PUBLISHER_BIN=$<TARGET_FILE:SimpleCommunicationPublisher>")
     set_property(TEST SimpleMixCommunicationBestEffort APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_SUBSCRIBER_BIN=$<TARGET_FILE:SimpleCommunicationPubSub>")
@@ -210,13 +210,13 @@ if(PYTHONINTERP_FOUND)
             "PATH=$<TARGET_FILE_DIR:${PROJECT_NAME}>\\;$<TARGET_FILE_DIR:fastcdr>\\;${WIN_PATH}")
     endif()
 
-    add_test(NAME SimpleMixCommunicationReliable
+    proxy_add_test(NAME SimpleMixCommunicationReliable
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/simple_mix_communication.py)
 
     # Set test with label NoMemoryCheck
     set_property(TEST SimpleMixCommunicationReliable PROPERTY LABELS "NoMemoryCheck")
 
-    set_property(TEST SimpleMixCommunicationReliable PROPERTY ENVIRONMENT
+    set_property(TEST SimpleMixCommunicationReliable APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_PUBLISHER_BIN=$<TARGET_FILE:SimpleCommunicationPublisher>")
     set_property(TEST SimpleMixCommunicationReliable APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_SUBSCRIBER_BIN=$<TARGET_FILE:SimpleCommunicationPubSub>")
@@ -229,13 +229,13 @@ if(PYTHONINTERP_FOUND)
     endif()
 
     if(SECURITY)
-        add_test(NAME SimpleCommunicationSecureBestEffort
+        proxy_add_test(NAME SimpleCommunicationSecureBestEffort
             COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/simple_communication.py)
 
         # Set test with label NoMemoryCheck
         set_property(TEST SimpleCommunicationSecureBestEffort PROPERTY LABELS "NoMemoryCheck")
 
-        set_property(TEST SimpleCommunicationSecureBestEffort PROPERTY ENVIRONMENT
+        set_property(TEST SimpleCommunicationSecureBestEffort APPEND PROPERTY ENVIRONMENT
             "SIMPLE_COMMUNICATION_PUBLISHER_BIN=$<TARGET_FILE:SimpleCommunicationPublisher>")
         set_property(TEST SimpleCommunicationSecureBestEffort APPEND PROPERTY ENVIRONMENT
             "SIMPLE_COMMUNICATION_SUBSCRIBER_BIN=$<TARGET_FILE:SimpleCommunicationSubscriber>")
@@ -251,7 +251,7 @@ if(PYTHONINTERP_FOUND)
                 "PATH=$<TARGET_FILE_DIR:${PROJECT_NAME}>\\;$<TARGET_FILE_DIR:fastcdr>\\;${WIN_PATH}")
         endif()
 
-        add_test(NAME SimpleCommunicationSecureMsgCryptoBestEffort
+        proxy_add_test(NAME SimpleCommunicationSecureMsgCryptoBestEffort
             COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/multiple_subs_secure_crypto_communication.py
             --pub $<TARGET_FILE:SimpleCommunicationPublisher>
             --xml-pub secure_msg_crypto_besteffort_pub.xml
@@ -268,7 +268,7 @@ if(PYTHONINTERP_FOUND)
                 "PATH=$<TARGET_FILE_DIR:${PROJECT_NAME}>\\;$<TARGET_FILE_DIR:fastcdr>\\;${WIN_PATH}")
         endif()
 
-        add_test(NAME SimpleCommunicationSecureMsgSubmsgCryptoBestEffort
+        proxy_add_test(NAME SimpleCommunicationSecureMsgSubmsgCryptoBestEffort
             COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/multiple_subs_secure_crypto_communication.py
             --pub $<TARGET_FILE:SimpleCommunicationPublisher>
             --xml-pub secure_msg_submsg_crypto_besteffort_pub.xml
@@ -285,7 +285,7 @@ if(PYTHONINTERP_FOUND)
                 "PATH=$<TARGET_FILE_DIR:${PROJECT_NAME}>\\;$<TARGET_FILE_DIR:fastcdr>\\;${WIN_PATH}")
         endif()
 
-        add_test(NAME SimpleCommunicationSecureSubmsgCryptoBestEffort
+        proxy_add_test(NAME SimpleCommunicationSecureSubmsgCryptoBestEffort
             COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/multiple_subs_secure_crypto_communication.py
             --pub $<TARGET_FILE:SimpleCommunicationPublisher>
             --xml-pub secure_submsg_crypto_besteffort_pub.xml
@@ -303,13 +303,13 @@ if(PYTHONINTERP_FOUND)
         endif()
     endif()
 
-    add_test(NAME LivelinessAssertion
+    proxy_add_test(NAME LivelinessAssertion
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/liveliness_assertion.py)
 
     # Set test with label NoMemoryCheck
     set_property(TEST LivelinessAssertion PROPERTY LABELS "NoMemoryCheck")
 
-    set_property(TEST LivelinessAssertion PROPERTY ENVIRONMENT
+    set_property(TEST LivelinessAssertion APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_PUBLISHER_BIN=$<TARGET_FILE:SimpleCommunicationPublisher>")
     set_property(TEST LivelinessAssertion APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_SUBSCRIBER_BIN=$<TARGET_FILE:SimpleCommunicationSubscriber>")
@@ -318,13 +318,13 @@ if(PYTHONINTERP_FOUND)
         set_property(TEST LivelinessAssertion APPEND PROPERTY ENVIRONMENT
             "PATH=$<TARGET_FILE_DIR:${PROJECT_NAME}>\\;$<TARGET_FILE_DIR:fastcdr>\\;${WIN_PATH}")
     endif()
-    add_test(NAME AutomaticLivelinessAssertion
+    proxy_add_test(NAME AutomaticLivelinessAssertion
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/automatic_liveliness_assertion.py)
 
     # Set test with label NoMemoryCheck
     set_property(TEST AutomaticLivelinessAssertion PROPERTY LABELS "NoMemoryCheck")
 
-    set_property(TEST AutomaticLivelinessAssertion PROPERTY ENVIRONMENT
+    set_property(TEST AutomaticLivelinessAssertion APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_PUBLISHER_BIN=$<TARGET_FILE:SimpleCommunicationPublisher>")
     set_property(TEST AutomaticLivelinessAssertion APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_SUBSCRIBER_BIN=$<TARGET_FILE:SimpleCommunicationSubscriber>")
@@ -334,13 +334,13 @@ if(PYTHONINTERP_FOUND)
             "PATH=$<TARGET_FILE_DIR:${PROJECT_NAME}>\\;$<TARGET_FILE_DIR:fastcdr>\\;${WIN_PATH}")
     endif()
 
-    add_test(NAME TwoPublishersCommunicationBestEffort
+    proxy_add_test(NAME TwoPublishersCommunicationBestEffort
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/two_publishers_communication.py)
 
     # Set test with label NoMemoryCheck
     set_property(TEST TwoPublishersCommunicationBestEffort PROPERTY LABELS "NoMemoryCheck")
 
-    set_property(TEST TwoPublishersCommunicationBestEffort PROPERTY ENVIRONMENT
+    set_property(TEST TwoPublishersCommunicationBestEffort APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_PUBLISHER_BIN=$<TARGET_FILE:SimpleCommunicationPublisher>")
     set_property(TEST TwoPublishersCommunicationBestEffort APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_SUBSCRIBER_BIN=$<TARGET_FILE:SimpleCommunicationSubscriber>")
@@ -352,13 +352,13 @@ if(PYTHONINTERP_FOUND)
             "PATH=$<TARGET_FILE_DIR:${PROJECT_NAME}>\\;$<TARGET_FILE_DIR:fastcdr>\\;${WIN_PATH}")
     endif()
 
-    add_test(NAME TwoPublishersCommunicationReliable
+    proxy_add_test(NAME TwoPublishersCommunicationReliable
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/two_publishers_communication.py)
 
     # Set test with label NoMemoryCheck
     set_property(TEST TwoPublishersCommunicationReliable PROPERTY LABELS "NoMemoryCheck")
 
-    set_property(TEST TwoPublishersCommunicationReliable PROPERTY ENVIRONMENT
+    set_property(TEST TwoPublishersCommunicationReliable APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_PUBLISHER_BIN=$<TARGET_FILE:SimpleCommunicationPublisher>")
     set_property(TEST TwoPublishersCommunicationReliable APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_SUBSCRIBER_BIN=$<TARGET_FILE:SimpleCommunicationSubscriber>")
@@ -370,13 +370,13 @@ if(PYTHONINTERP_FOUND)
             "PATH=$<TARGET_FILE_DIR:${PROJECT_NAME}>\\;$<TARGET_FILE_DIR:fastcdr>\\;${WIN_PATH}")
     endif()
 
-    add_test(NAME SimpleCommunicationBestEffortFixed
+    proxy_add_test(NAME SimpleCommunicationBestEffortFixed
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/simple_communication.py)
 
     # Set test with label NoMemoryCheck
     set_property(TEST SimpleCommunicationBestEffortFixed PROPERTY LABELS "NoMemoryCheck")
 
-    set_property(TEST SimpleCommunicationBestEffortFixed PROPERTY ENVIRONMENT
+    set_property(TEST SimpleCommunicationBestEffortFixed APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_PUBLISHER_BIN=$<TARGET_FILE:SimpleCommunicationPublisher>")
     set_property(TEST SimpleCommunicationBestEffortFixed APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_SUBSCRIBER_BIN=$<TARGET_FILE:SimpleCommunicationSubscriber>")
@@ -392,13 +392,13 @@ if(PYTHONINTERP_FOUND)
             "PATH=$<TARGET_FILE_DIR:${PROJECT_NAME}>\\;$<TARGET_FILE_DIR:fastcdr>\\;${WIN_PATH}")
     endif()
 
-    add_test(NAME SHMCommunicationSubscriberDiesWhileProcessingMessage
+    proxy_add_test(NAME SHMCommunicationSubscriberDiesWhileProcessingMessage
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/shm_communication_subscriber_dies_while_processing_message.py)
 
     # Set test with label NoMemoryCheck
     set_property(TEST SHMCommunicationSubscriberDiesWhileProcessingMessage PROPERTY LABELS "NoMemoryCheck")
 
-    set_property(TEST SHMCommunicationSubscriberDiesWhileProcessingMessage PROPERTY ENVIRONMENT
+    set_property(TEST SHMCommunicationSubscriberDiesWhileProcessingMessage APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_PUBLISHER_BIN=$<TARGET_FILE:SimpleCommunicationPublisher>")
     set_property(TEST SHMCommunicationSubscriberDiesWhileProcessingMessage APPEND PROPERTY ENVIRONMENT
         "SIMPLE_COMMUNICATION_SUBSCRIBER_BIN=$<TARGET_FILE:SimpleCommunicationSubscriber>")

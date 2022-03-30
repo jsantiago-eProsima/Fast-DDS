@@ -62,7 +62,7 @@ macro(add_gtest)
                 string(REGEX REPLACE ["\) \(,"] ";" GTEST_TEST_NAME ${GTEST_TEST_NAME})
                 list(GET GTEST_TEST_NAME 1 GTEST_GROUP_NAME)
                 list(GET GTEST_TEST_NAME 3 GTEST_TEST_NAME)
-                add_test(NAME ${GTEST_GROUP_NAME}.${GTEST_TEST_NAME}
+                proxy_add_test(NAME ${GTEST_GROUP_NAME}.${GTEST_TEST_NAME}
                     COMMAND ${command}
                     --gtest_filter=${GTEST_GROUP_NAME}.${GTEST_TEST_NAME}:*/${GTEST_GROUP_NAME}.${GTEST_TEST_NAME}/*:${GTEST_GROUP_NAME}/*.${GTEST_TEST_NAME})
 
@@ -77,8 +77,8 @@ macro(add_gtest)
                 endforeach()
 
                 if(GTEST_ENVIRONMENT)
-                    set_tests_properties(${GTEST_GROUP_NAME}.${GTEST_TEST_NAME}
-                        PROPERTIES ENVIRONMENT "${GTEST_ENVIRONMENT}")
+                set_property(TEST ${GTEST_GROUP_NAME}.${GTEST_TEST_NAME}
+                    APPEND PROPERTY  ENVIRONMENT "${GTEST_ENVIRONMENT}")
                 endif()
                 unset(GTEST_ENVIRONMENT)
 
@@ -88,7 +88,7 @@ macro(add_gtest)
             endforeach()
         endforeach()
     else()
-        add_test(NAME ${test} COMMAND ${command})
+        proxy_add_test(NAME ${test} COMMAND ${command})
 
         # Add environment
         set(GTEST_ENVIRONMENT "")
@@ -121,8 +121,8 @@ macro(add_gtest)
         endforeach()
 
         if(GTEST_ENVIRONMENT)
-            set_tests_properties(${test}
-                PROPERTIES ENVIRONMENT "${GTEST_ENVIRONMENT}")
+            set_property(TEST ${test}
+                APPEND PROPERTY  ENVIRONMENT "${GTEST_ENVIRONMENT}")
         endif()
         unset(GTEST_ENVIRONMENT)
 
