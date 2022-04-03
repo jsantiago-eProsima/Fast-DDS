@@ -25,7 +25,7 @@ if(TSAN_PERFILE_LOG)
 
     # Get a config timestamp (all builds of the same config override each other)
     if(WIN32)
-        execute_process(COMMAND powershell -C Get-Date -Format "MMMM-d-yyyy_HH-mm-ss" OUTPUT_VARIABLE TSAN_TIMESTAMP)
+        execute_process(COMMAND powershell -C Get-Date -Format "MMMM-dd-yyyy_HH-mm-ss" OUTPUT_VARIABLE TSAN_TIMESTAMP)
     elseif(UNIX)
         execute_process(COMMAND $ENV{SHELL} -c "LC_ALL=en_US.utf8 date +%B-%d-%Y_%H-%M-%S" OUTPUT_VARIABLE TSAN_TIMESTAMP)
     else()
