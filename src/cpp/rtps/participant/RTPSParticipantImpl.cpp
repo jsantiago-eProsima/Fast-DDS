@@ -325,7 +325,7 @@ RTPSParticipantImpl::RTPSParticipantImpl(
 #if HAVE_SECURITY
     // Start security
     // TODO(Ricardo) Get returned value in future.
-    if (m_security_manager.init(
+    if (!m_security_manager.init(
                 security_attributes_,
                 PParam.properties))
     {
