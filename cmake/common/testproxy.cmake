@@ -19,7 +19,7 @@ if(TSAN_PERFILE_LOG)
     set(TSAN_OPTIONS "TSAN_OPTIONS=")
 
     # check if TSAN_OPTIONS are specified to keep it's contents
-    if(ENV{TSAN_OPTIONS}) 
+    if(DEFINED ENV{TSAN_OPTIONS}) 
         string(APPEND TSAN_OPTIONS "$ENV{TSAN_OPTIONS}")
     endif()
 
