@@ -70,7 +70,7 @@ if(PYTHONINTERP_FOUND)
         # CTest has issues with signals on windows. We forked the test
         # execution using an auxiliary powershell script
         if(WIN32)
-           add_test(
+           proxy_add_test(
                     NAME system.tools.fastdds.${TEST}
                     COMMAND powershell "-File" ${PWS_LAUNCHER}
                             ${PYTHON_EXECUTABLE}
@@ -79,7 +79,7 @@ if(PYTHONINTERP_FOUND)
                             ${TEST}
                 )
         else()
-            add_test(
+            proxy_add_test(
                     NAME system.tools.fastdds.${TEST}
                     COMMAND ${PYTHON_EXECUTABLE}
                             ${CMAKE_CURRENT_SOURCE_DIR}/tests.py
@@ -93,8 +93,10 @@ if(PYTHONINTERP_FOUND)
             system.tools.fastdds.${TEST}
             PROPERTIES
                 LABELS "NoMemoryCheck"
-                ENVIRONMENT "${TEST_ENVIRONMENT}"
             )
+
+        set_property(TEST system.tools.fastdds.${TEST}
+                     APPEND PROPERTY ENVIRONMENT "${TEST_ENVIRONMENT}")
 
     endforeach()
 

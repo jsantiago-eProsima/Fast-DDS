@@ -162,13 +162,13 @@ endif()
 ###############################################################################
 if(PYTHONINTERP_FOUND)
     # Dynamic types test
-    add_test(NAME DDSSimpleCommunicationTypeDiscovery
+    proxy_add_test(NAME DDSSimpleCommunicationTypeDiscovery
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/simple_communication_dynamic.py)
 
     # Set test with label NoMemoryCheck
     set_property(TEST DDSSimpleCommunicationTypeDiscovery PROPERTY LABELS "NoMemoryCheck")
 
-    set_property(TEST DDSSimpleCommunicationTypeDiscovery PROPERTY ENVIRONMENT
+    set_property(TEST DDSSimpleCommunicationTypeDiscovery APPEND PROPERTY ENVIRONMENT
         "DDS_SIMPLE_COMMUNICATION_PUBLISHER_BIN=$<TARGET_FILE:DDSSimpleCommunicationDynamicPublisher>")
     set_property(TEST DDSSimpleCommunicationTypeDiscovery APPEND PROPERTY ENVIRONMENT
         "DDS_SIMPLE_COMMUNICATION_SUBSCRIBER_BIN=$<TARGET_FILE:DDSSimpleCommunicationDynamicSubscriber>")
@@ -183,7 +183,7 @@ if(PYTHONINTERP_FOUND)
 
     foreach(TEST_DEFINITION IN LISTS TEST_DEFINITIONS)
         set(TEST_NAME DDSCommunication_${TEST_DEFINITION})
-        add_test(
+        proxy_add_test(
             NAME ${TEST_NAME}
             COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/${TEST_BUILDER}
             ${TEST_DEFINITION}.json
@@ -192,7 +192,7 @@ if(PYTHONINTERP_FOUND)
         # Set test with label NoMemoryCheck
         set_property(TEST ${TEST_NAME} PROPERTY LABELS "NoMemoryCheck")
 
-        set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT
+        set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT
             "DDS_SIMPLE_COMMUNICATION_PUBLISHER_BIN=$<TARGET_FILE:DDSCommunicationPublisher>")
         set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT
             "DDS_SIMPLE_COMMUNICATION_SUBSCRIBER_BIN=$<TARGET_FILE:DDSCommunicationSubscriber>")
