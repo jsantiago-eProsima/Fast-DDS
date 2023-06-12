@@ -202,22 +202,14 @@ jobs:
 
       - name: Install OpenSSL
         run: |
-          # Windows host has only the binaries installed, we need the headers too
-          # download the last installer
-          $uri = 'https://slproweb.com' +
-            ((iwr 'https://slproweb.com/products/Win32OpenSSL.html').links |
-            sls 'href=\"(.*download/Win64OpenSSL-1_1_1.*\.exe)\"').matches.Groups.value[-1]
-            iwr -Uri $uri -OutFile "$Env:TMP\Win64OpenSSL.exe"
-
-          # Do install
-          & "$Env:TMP\Win64OpenSSL.exe" /silent /verysilent /sp- /suppressmsgboxes;
+          # Install vcpkg
+          $vcpkg_dir = "$Env:ProgramFiles\vcpkg"
+          git clone https://github.com/microsoft/vcpkg $vcpkg_dir
+          $vcpkg_dir\bootstrap-vcpkg.bat
+          $vcpkg_dir\vcpkg install openssl-windows:x64-windows
 
           # Update the environment
-          "OPENSSL64_ROOT=$Env:ProgramFiles\OpenSSL-Win64" | Out-File $Env:GITHUB_ENV -Append -Encoding OEM
-
-          # Wait for the installation to be fulfill
-          Get-Process Win??OpenSSL -ErrorAction SilentlyContinue | Wait-Process
-          del "$Env:TMP\Win64OpenSSL.exe"
+          echo "OPENSSL64_ROOT=$Env:ProgramFiles\OpenSSL-Win64" | Out-File $Env:GITHUB_ENV -Append -Encoding OEM
 
       - name: Update known hosts file for DNS resolver testing
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'no-test') }}
