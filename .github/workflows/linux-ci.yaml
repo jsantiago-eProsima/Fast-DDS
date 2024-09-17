@@ -1,0 +1,99 @@
+name: Linux CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      cmake-args:
+        description: 'Optional arguments to pass to CMake'
+        required: false
+      ctest-args:
+        description: 'Optional arguments to pass to CTest'
+        required: false
+  pull_request:
+  push:
+    branches:
+      - master
+      - 2.10.x
+      - 2.1.x
+      - 2.9.x
+      - 2.8.x
+  schedule:
+    - cron: '0 1 * * *'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  linux-ci:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner-os:
+          - 'ubuntu-22.04'
+          - 'ubuntu-20.04'
+
+    runs-on: ${{ matrix.runner-os }}
+    
+    steps:
+      - name: Sync eProsima/Fast-DDS repository
+        uses: actions/checkout@v3
+        with:
+          path: src/Fast-DDS
+
+      - name: Install apt packages
+        uses: eProsima/eProsima-CI/ubuntu/install_fast_dependencies@feature/build_dependencies
+
+      - name: Fetch Fast DDS dependencies
+        uses: ./src/Fast-DDS/.github/actions/fetch-fastdds-repos
+        with:
+          target_directory: src
+          googletest: true
+
+      - name: Set up hosts file for DNS testing
+        run: |
+          sudo echo "" | sudo tee -a /etc/hosts
+          sudo echo "localhost.test 127.0.0.1 ::1" | sudo tee -a /etc/hosts
+          sudo echo "www.eprosima.com.test 154.56.134.194" | sudo tee -a /etc/hosts
+          sudo echo "www.acme.com.test 216.58.215.164 2a00:1450:400e:803::2004" | sudo tee -a /etc/hosts
+          sudo echo "www.foo.com.test 140.82.121.4 140.82.121.3" | sudo tee -a /etc/hosts
+          sudo echo "acme.org.test ff1e::ffff:efff:1" | sudo tee -a /etc/hosts
+
+      - name: Build workspace
+        run: |
+          colcon build \
+            --event-handlers=console_direct+ \
+            --metas src/Fast-DDS/.github/workflows/linux-ci/linux-ci.meta \
+            --cmake-args ${{ github.event.inputs.cmake-args }}
+
+      - name: Run tests Fast DDS
+        id: testing
+        run: |
+          source install/setup.bash && \
+          colcon test \
+            --packages-select fastrtps \
+            --event-handlers=console_direct+ \
+            --return-code-on-test-failure \
+            --retest-until-pass 3 \
+            --metas src/Fast-DDS/.github/workflows/linux-ci/linux-ci.meta \
+            --ctest-args ${{ github.event.inputs.ctest-args }}
+
+        continue-on-error: true
+
+      - name: Upload Logs
+        uses: actions/upload-artifact@v1
+
+        with:
+          name: test-results-${{ matrix.runner-os }}
+          path: log/latest_test/fastrtps
+        if: always()
+
+      - name: Check for failure
+        if: steps.testing.outcome != 'success'
+        run: |
+          echo '## ${{ matrix.runner-os }}' >> $GITHUB_STEP_SUMMARY
+          echo '| Test | Reason |' >> $GITHUB_STEP_SUMMARY
+          echo '|---|---|' >> $GITHUB_STEP_SUMMARY'
+          grep -rin "(Failed\|(Child\|(Timeout" log/latest_test/fastrtps/stdout_stderr.log | awk -F "[-|(|)]+" '//{print "|" $2 "| " $3 " |"}' >> $GITHUB_STEP_SUMMARY
+          exit 1
